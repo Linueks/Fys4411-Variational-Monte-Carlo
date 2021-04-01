@@ -8,13 +8,23 @@
 using std::cout;
 using std::endl;
 
-HarmonicOscillator::HarmonicOscillator(System* system, double omega) :
-        Hamiltonian(system) {
-    assert(omega > 0);
-    m_omega  = omega;
+HarmonicOscillatorNum::HarmonicOscillatorNum(System* system, double omega_ho, double omega_r) :
+    Hamiltonian(system){
+        assert(omega_ho > 0);
+        assert(omega_r > 0);
+        m_omega_ho = omega_ho;
+        m_omega_r = omega_r;
 }
 
-double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) {
+HarmonicOscillator::HarmonicOscillator(System* system, double omega_ho, double omega_r) :
+    HarmonicOscillatorNum(system, omega_ho, omega_r){
+        assert(omega_ho > 0);
+        assert(omega_r > 0);
+        m_omega_ho = omega_ho;
+        m_omega_r = omega_r;
+}
+
+double HarmonicOscillator::computeKineticEnergy(std::vector<Particle*> particles){
     /* Here, you need to compute the kinetic and potential energies. Note that
      * when using numerical differentiation, the computation of the kinetic
      * energy becomes the same for all Hamiltonians, and thus the code for
@@ -24,9 +34,29 @@ double HarmonicOscillator::computeLocalEnergy(std::vector<Particle*> particles) 
      * getWaveFunction method in the m_system object in the super-class, i.e.
      * m_system->getWaveFunction()...
      */
+    WaveFunction* waveFunction = m_system->getWaveFunction();
 
-    double potentialEnergy = 0;
-    double kineticEnergy   = 0;
-    return kineticEnergy + potentialEnergy;
+    double kineticEnergy = 0;
+
+    kineticEnergy = -0.5 * waveFunction->computeDoubleDerivative(particles);
+
+    return kineticEnergy / waveFunction->evaluate(particles);
 }
 
+double HarmonicOscillatorNum::computePotentialEnergy(std::vector<Particle*> particles){
+    double potentialEnergy = 0;
+    double rSquared = 0;
+
+    const int numberOfParticles = m_system->getNumberOfParticles();
+    const int numberOfDimensions = m_system->getNumberOfDimensions();
+
+    for (int i=0; i < numberOfParticles; i++){
+        std::vector<double> particlePosition = particles[i]->getPosition();
+        for (int d=0; d < numberOfDimensions; d++){
+                rSquared += particlePosition[d] * particlePosition[d];
+            //cout << "Hamiltonian no interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << rSquared << endl;
+            }       
+        }
+
+    return potentialEnergy = 0.5 * m_omega_ho*m_omega_ho * rSquared;
+}

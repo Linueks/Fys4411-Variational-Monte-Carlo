@@ -4,13 +4,17 @@
 #include "wavefunction.h"
 #include "../system.h"
 #include "../particle.h"
+#include <iostream>
+
+using namespace std;
 
 SimpleGaussian::SimpleGaussian(System* system, double alpha) :
-        WaveFunction(system) {
-    assert(alpha >= 0);
-    m_numberOfParameters = 1;
-    m_parameters.reserve(1);
-    m_parameters.push_back(alpha);
+    WaveFunction(system){
+        assert(alpha >= 0);
+        m_numberOfParameters = 1;
+        m_parameters.reserve(m_numberOfParameters);
+        m_parameters.push_back(alpha);
+        //m_parameters.push_back(beta);
 }
 
 double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
@@ -21,7 +25,22 @@ double SimpleGaussian::evaluate(std::vector<class Particle*> particles) {
      * For the actual expression, use exp(-alpha * r^2), with alpha being the
      * (only) variational parameter.
      */
-    return 0;
+    double m_alpha = m_parameters[0];
+    double rSquared = 0;
+    const int numberOfParticles = m_system->getNumberOfParticles();
+    const int numberOfDimensions = m_system->getNumberOfDimensions();
+
+    for (int i=0; i < numberOfParticles; i++){
+        std::vector<double> particlePosition = particles[i]->getPosition();
+        for (int j=0; j < numberOfDimensions; j++){
+            // check if we have a z-dimension as this is different than x and y with parameter beta varying the trap shape
+            rSquared += particlePosition[j] * particlePosition[j];
+        }
+    }
+
+    //cout << exp(-m_alpha * r_squared) << endl;
+    //cout << "r squared: " << r_squared << endl;
+    return exp(-m_alpha * rSquared);
 }
 
 double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> particles) {
@@ -33,5 +52,40 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
      * This quantity is needed to compute the (local) energy (consider the
      * Schrödinger equation to see how the two are related).
      */
-    return 0;
+
+    // using analytical derivative for n particles with option to have it elliptical if beta is different from one
+    // m_omega_ho is the frequency in xy direction, m_omega_r is the frequency in z direction, beta is the strechedness of the potential in the z direction, 
+    double m_alpha = m_parameters[0];
+    const int numberOfParticles = m_system->getNumberOfParticles();
+    const int numberOfDimensions = m_system->getNumberOfDimensions();
+
+    // Below is the calculation of the kinetic portion of the local energy
+    double rSquared = 0;
+
+    for (int i=0; i < numberOfParticles; i++){
+        std::vector<double> particlePosition = particles[i]->getPosition();
+        for (int j=0; j < numberOfDimensions; j++){
+            rSquared += particlePosition[j] * particlePosition[j];
+            cout << "no interaction, " <<"i:"<< i <<", d:"<< j << ", term:" << rSquared << endl;
+
+        }
+    }
+    //cout << rSquared << endl;
+    return (-2 * numberOfDimensions * numberOfParticles * m_alpha + 4 * m_alpha*m_alpha * rSquared) * exp(-m_alpha * rSquared);
+}
+
+double SimpleGaussian::alphaDerivative(std::vector<class Particle*> particles) {
+    const int numberOfParticles = m_system->getNumberOfParticles();
+    const int numberOfDimensions = m_system->getNumberOfDimensions();
+
+    double rSquared = 0;
+
+    //cout << "hei" << endl;
+    for (int i=0; i<numberOfParticles; i++){
+        std::vector<double> particlePosition = particles[i]->getPosition();
+        for (int j=0; j<numberOfDimensions; j++){
+            rSquared += particlePosition[j] * particlePosition[j];
+        }
+    }
+    return -rSquared;
 }
