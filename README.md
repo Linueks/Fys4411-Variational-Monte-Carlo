@@ -1,4 +1,11 @@
-# Simple Variational Monte Carlo solve for FYS4411
+# Project1 FYS4411 Computational Physics, Quantum Mechanical Systems Spring 2021 
+
+
+
+
+Below is the readme from the forked repository which contained the code skeleton this project is based on. Through the project significant changes have been made to the existing code.
+
+## Simple Variational Monte Carlo solve for FYS4411
 
 Example class structure for the first VMC project of FYS4411 (spring 2021). You may, if you wish, fork this repository and make it the basis of your project. If you choose to do this, you will have to implement a lot of the crucial functions yourself. The relevant functions you need to implement are spread throughout the project, but they are all commented with a note saying what each function should do.
 
@@ -11,10 +18,10 @@ If you want to write your own code from scratch, you are of course welcome to do
 - You can skip over the output function in the Sampler class and the entire Random class.
 
 
-## Compiling and running the project
+### Compiling and running the project
 There are now several options you can use for compiling the project. If you use QT Creator, you can import this project into the IDE and point it to the `.pro`-file. If not, you can use CMake to create a Makefile for you which you can then run. You can install CMake through one of the Linux package managers, e.g., `apt install cmake`, `pacman -S cmake`, etc. For Mac you can install using `brew install cmake`. Other ways of installing are shown here: [https://cmake.org/install/](https://cmake.org/install/).
 
-### Compiling the project using CMake
+#### Compiling the project using CMake
 In a Linux/Mac terminal this can be done by the following commands
 ```bash
 # Create build-directory
@@ -42,13 +49,13 @@ and the same set of commands are done for you. Now the project can be run by exe
 ```
 in the top-directory.
 
-#### Cleaning the directory
+##### Cleaning the directory
 Run `make clean` in the top-directory to remove the executable `vmc` and the `build`-directory.
 
-#### Windows
+##### Windows
 Compilation of the project using Windows is still an open question to me, but please include a pull-request if you've got an example. CMake should be OS-independent, but `make` does not work on Windows.
 
-## Completing the missing parts ##
+### Completing the missing parts ##
 Here follows a suggestion for how you can work to complete the missing parts of the code:
 - Start by implementing the Gaussian wave function: Write the evaluate function. Assume for now that the number of particles is always one, and the number of dimensions is always 1. Next, compute the Laplacian analytically, and implement the double derivative function.
 - Secondly, use the Random class (or your own favorite random number generator, should you have one) to implement the missing part of the setupInitialState part of the RandomUniform class. Note that this should be pretty straight forward and simple.
