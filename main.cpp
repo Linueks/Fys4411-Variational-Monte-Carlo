@@ -47,52 +47,32 @@ int main() {
 
     // Seed for the random number generator
     int seed = 2021;
-
     int numberOfDimensions = 1;
     int numberOfParticles = 1;
-    int numberOfSteps = 1 << 6;
+    int numberOfSteps = 1 << 5;
     double omega_ho = 1.0;                          // Oscillator xy frequency.
     double omega_r = 1.0;                           // Oscillator z frequency  
     double stepLength = 0.1;                        // Metropolis step length.
     double equilibration = 0.1;                     // Amount of the total steps used
-    // for equilibration.
-
     double alpha = 0.5;                             // Variational parameter.
-    double beta = 2.82843;                                // Trap ellipticity
-    double a = 0.0043;                                 // cutoff parameter for interaction
-
-    // for when using HarmonicOscillatorNum class
-    double derivativeStepSize = 1e-3;
-
-    //bool computeAnalytical = false;
-    bool activateImportanceSampling = true;
-    double importanceDt = 0.05;
-
-    bool writeToFile = true;
-    string filename = "..\\..\\data\\energy.txt";
+    double beta = 2.82843;                          // Trap ellipticity
+    double a = 0.0043;                              // Cutoff parameter for particle interaction
+    double importanceDt = 0.05;                     // Timestep in importance sampling
+    double derivativeStepSize = 1e-3;               // For when using numeric differentiation
 
 
     // different method flags, bad solution but better than comment / uncommenting
     bool calculateNumericDerivative = false;
-    bool simpleHarmonicOscillator = false;
-    bool interactingHarmonicOscillator = true;
+    bool interactionOrNoInteraction = true;
+    
+    
+    bool activateImportanceSampling = true;
+    string filename = "..\\..\\data\\energy.txt";  
+    bool writeToFile = true;
 
-
-
+    // set up system with everything defined above
     System* system = new System(seed);
-
-    if (simpleHarmonicOscillator){
-        if (calculateNumericDerivative){
-            system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
-        }
-        else{
-            system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
-        }
-        system->setWaveFunction(new SimpleGaussian(system, alpha));
-    }
-
-
-    if (interactingHarmonicOscillator){
+    if (interactionOrNoInteraction){
         if (calculateNumericDerivative){
             system->setHamiltonian(new InteractionOscillatorNum(system, omega_ho, omega_r));
         }
@@ -100,6 +80,15 @@ int main() {
             system->setHamiltonian(new InteractionOscillator(system, omega_ho, omega_r));
         }
         system->setWaveFunction(new Interacting(system, alpha, beta, a));
+    }
+    else{
+        if (calculateNumericDerivative){
+            system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
+        }
+        else{
+            system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
+        }
+        system->setWaveFunction(new SimpleGaussian(system, alpha));
     }
 
 
@@ -114,7 +103,7 @@ int main() {
     system->runMetropolisSteps(numberOfSteps);
 
 
-
+    // brute force search of the alpha parameter space
 /*     double variationalStepLength = 0.05;            // step length for alpha and beta values
     double variationalIterations = 5;              // alpha + variationalStepLength*variationalIterations will be the end alpha
     for (int i=0; i<variationalIterations; i++) {   
@@ -134,6 +123,7 @@ int main() {
 
 
 
+    // simplest gradient descent search of the alpha parameter space
 /*     double nGradientDescentRuns = 50;
     double learningRate = 0.35;
 
