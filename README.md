@@ -1,9 +1,10 @@
 # Project1 FYS4411 Computational Physics, Quantum Mechanical Systems Spring 2021 
-
-
-
-
 Below is the readme from the forked repository which contained the code skeleton this project is based on. Through the project significant changes have been made to the existing code.
+
+## Usage
+No command line interface / reading variables from file has been implemented as of yet, so when changing values a recompile is needed (stupid I know), this would be something prioritized in future work on this code. Now there just three boolean flags in the main.cpp file which toggles SimpleHarmonicOscillator, InteractingHarmonicOscillator and whether or not to use numeric differentiation for the kinetic energy calculation. There is also a flag for toggling Importance sampling.
+
+
 
 ## Simple Variational Monte Carlo solve for FYS4411
 
@@ -54,13 +55,3 @@ Run `make clean` in the top-directory to remove the executable `vmc` and the `bu
 
 ##### Windows
 Compilation of the project using Windows is still an open question to me, but please include a pull-request if you've got an example. CMake should be OS-independent, but `make` does not work on Windows.
-
-### Completing the missing parts ##
-Here follows a suggestion for how you can work to complete the missing parts of the code:
-- Start by implementing the Gaussian wave function: Write the evaluate function. Assume for now that the number of particles is always one, and the number of dimensions is always 1. Next, compute the Laplacian analytically, and implement the double derivative function.
-- Secondly, use the Random class (or your own favorite random number generator, should you have one) to implement the missing part of the setupInitialState part of the RandomUniform class. Note that this should be pretty straight forward and simple.
-- Next, implement the metropolisStep function in the System class. Implement also the small missing part of the runMetropolisSteps function.
-- Now, the last big thing needed is to implement the energy calculation. This is done by the Hamiltonian sub-class HarmonicOscillator. Here you will have to use the Laplacian you calculated for the wave function earlier.
-- Now the code should be functioning and you should see (somewhat) reasonable results. Try to set the oscillator frequency to 1 and calculate analytically the energy of the oscillator. Recall the form of the ground state wave function of the harmonic oscillator, and set the parameter alpha accordingly. What is the resulting energy?
-- If this energy is NOT correct, the last bit missing is to take a look at the computeAverages function in the Sampler class. What is missing here?
-
