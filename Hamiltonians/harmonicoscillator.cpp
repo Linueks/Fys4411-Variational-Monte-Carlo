@@ -1,3 +1,4 @@
+#pragma once
 #include "harmonicoscillator.h"
 #include <cassert>
 #include <iostream>
@@ -40,23 +41,65 @@ double HarmonicOscillator::computeKineticEnergy(std::vector<Particle*> particles
 
     kineticEnergy = -0.5 * waveFunction->computeDoubleDerivative(particles);
 
-    return kineticEnergy / waveFunction->evaluate(particles);
+    return kineticEnergy;
 }
 
 double HarmonicOscillatorNum::computePotentialEnergy(std::vector<Particle*> particles){
     double potentialEnergy = 0;
-    double rSquared = 0;
-
     const int numberOfParticles = m_system->getNumberOfParticles();
     const int numberOfDimensions = m_system->getNumberOfDimensions();
+    bool interactionOrNot = m_system->getInteractionOrNot();
 
-    for (int i=0; i < numberOfParticles; i++){
-        std::vector<double> particlePosition = particles[i]->getPosition();
-        for (int d=0; d < numberOfDimensions; d++){
-                rSquared += particlePosition[d] * particlePosition[d];
-            //cout << "Hamiltonian no interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << rSquared << endl;
-            }       
+
+    // last change here, moved the true code below from interactionsoscillator.cpp to try to fix it'
+    // ended up with two seemingly identical codes below that produce different values for 1 particle 1 dimension. 
+    // they should be equal unless im completely wrong. 
+/*     if (interactionOrNot){
+        double internalEnergy = 0;
+        double rxySquared = 0;
+        double rzSquared = 0;
+        double ijNorm = 0;
+        double m_a = m_system->getCutoffRadius();
+
+        cout << "got in here" << endl;
+
+        for (int i=0; i < numberOfParticles; i++){
+            std::vector<double> ithParticle = particles[i]->getPosition();
+            for (int d=0; d < numberOfDimensions; d++){
+                if (d==2){
+                    rzSquared += ithParticle[d]*ithParticle[d];
+                }
+                else{
+                    rxySquared += ithParticle[d]*ithParticle[d];
+                }
+                cout << "Hamiltonian interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << rxySquared << endl;
+    
+            }
+
+            for (int j=i+1; j < numberOfParticles; j++){
+                std::vector<double> jthParticle = particles[i]->getPosition();
+                for (int d=0; d < numberOfDimensions; d++){
+                    ijNorm += (jthParticle[d] - ithParticle[d]) * (jthParticle[d] - ithParticle[d]);
+                }
+                ijNorm = sqrt(ijNorm);
+                if (ijNorm < m_a){
+                    // some big number, technically is infinite
+                    potentialEnergy += 1e6;
+                }
+            }
         }
+    return potentialEnergy += 0.5 * (m_omega_ho*m_omega_ho*rxySquared + m_omega_r*m_omega_r*rzSquared);
+    } */
 
-    return potentialEnergy = 0.5 * m_omega_ho*m_omega_ho * rSquared;
+    //else{
+        double rSquared = 0;
+        for (int i=0; i < numberOfParticles; i++){
+            std::vector<double> particlePosition = particles[i]->getPosition();
+            for (int d=0; d < numberOfDimensions; d++){
+                    rSquared += particlePosition[d] * particlePosition[d];
+                //cout << "Hamiltonian no interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << rSquared << endl;
+                }       
+            }
+        return potentialEnergy = 0.5 * m_omega_ho*m_omega_ho * rSquared;
+    //}
 }

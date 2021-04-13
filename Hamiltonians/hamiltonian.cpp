@@ -40,7 +40,7 @@ double Hamiltonian::computeKineticEnergy(std::vector<Particle *> particles) {
                 kineticEnergy -= (waveFunctionMinus+waveFunctionPlus - 2*waveFunctionOld);
         }
     }
-    return 0.5 * derivativeSquaredInverse * kineticEnergy / waveFunction->evaluate(particles);
+    return 0.5 * derivativeSquaredInverse * kineticEnergy;
 }
 
 double Hamiltonian::computeLocalEnergy(std::vector<Particle*> particles) {

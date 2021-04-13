@@ -1,3 +1,4 @@
+#pragma once
 #include "interactionoscillator.h"
 #include <cassert>
 #include <iostream>
@@ -18,11 +19,7 @@ InteractionOscillatorNum::InteractionOscillatorNum(System* system, double omega_
 }
 
 InteractionOscillator::InteractionOscillator(System* system, double omega_ho, double omega_r) :
-    InteractionOscillatorNum(system, omega_ho, omega_r){
-        assert(omega_ho > 0);
-        assert(omega_r > 0);
-        m_omega_ho = omega_ho;
-        m_omega_r = omega_r;     
+    InteractionOscillatorNum(system, omega_ho, omega_r){  
 }
 
 double InteractionOscillator::computeKineticEnergy(std::vector<Particle*> particles){
@@ -30,7 +27,7 @@ double InteractionOscillator::computeKineticEnergy(std::vector<Particle*> partic
     double kineticEnergy = 0;
     kineticEnergy = -0.5 * wavefunction->computeDoubleDerivative(particles);
 
-    return kineticEnergy / wavefunction->evaluate(particles);
+    return kineticEnergy;
 }
 
 double InteractionOscillatorNum::computePotentialEnergy(std::vector<Particle*> particles){
@@ -42,6 +39,7 @@ double InteractionOscillatorNum::computePotentialEnergy(std::vector<Particle*> p
     const int numberOfParticles = m_system->getNumberOfParticles();
     const int numberOfDimensions = m_system->getNumberOfDimensions();
     double m_a = m_system->getCutoffRadius();
+    double m_beta = m_system->getWaveFunction()->getParameters()[1];
 
     for (int i=0; i < numberOfParticles; i++){
         std::vector<double> ithParticle = particles[i]->getPosition();
@@ -57,9 +55,10 @@ double InteractionOscillatorNum::computePotentialEnergy(std::vector<Particle*> p
         }
 
         for (int j=i+1; j < numberOfParticles; j++){
+            //cout << "im never here" << endl;
             std::vector<double> jthParticle = particles[i]->getPosition();
             for (int d=0; d < numberOfDimensions; d++){
-                ijNorm += (jthParticle[d] - ithParticle[d]) * (jthParticle[d] - ithParticle[d]);
+                ijNorm += (ithParticle[d] - jthParticle[d]) * (ithParticle[d] - jthParticle[d]);
             }
             ijNorm = sqrt(ijNorm);
             if (ijNorm < m_a){
@@ -68,5 +67,5 @@ double InteractionOscillatorNum::computePotentialEnergy(std::vector<Particle*> p
             }
         }
     }
-    return potentialEnergy += 0.5 * (m_omega_ho*m_omega_ho*rxySquared + m_omega_r*m_omega_r*rzSquared);
+    return potentialEnergy += 0.5 * (rxySquared + m_beta * rzSquared);
 }
