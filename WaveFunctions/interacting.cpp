@@ -83,11 +83,11 @@ double Interacting::computeDoubleDerivative(std::vector<class Particle*> particl
         for (int d=0; d < numberOfDimensions; d++){
             if (d==2){
                 mainTerm1 += iParticle[d]*iParticle[d]*m_beta;
-                cout << "interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << mainTerm1 << endl;
+                //cout << "interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << mainTerm1 << endl;
             }
             else{
                 mainTerm1 += iParticle[d]*iParticle[d];
-                cout << "interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << mainTerm1 << endl;
+                //cout << "interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << mainTerm1 << endl;
             }
 /*             mainTerm1 += iParticle[d]*iParticle[d];
             cout << "interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << mainTerm1 << endl; */
@@ -96,7 +96,7 @@ double Interacting::computeDoubleDerivative(std::vector<class Particle*> particl
             double temp = 0;
             std::vector<double> jParticle = particles[j]->getPosition();
             for (int h=0; h < numberOfDimensions; h++){
-                cout << "kom inn i 2" << endl;
+                //cout << "kom inn i 2" << endl;
                 if (h==2){
                     mainTerm2 += iParticle[h] * (iParticle[h] - jParticle[h]) *m_beta;
                 }
@@ -109,7 +109,7 @@ double Interacting::computeDoubleDerivative(std::vector<class Particle*> particl
             mainTerm2 += temp;
 
             for (int k=j+1; k < numberOfParticles; k++){
-                cout << "kom inn i 3" << endl;
+                //cout << "kom inn i 3" << endl;
                 double temp = 0;
                 std::vector<double> kParticle = particles[k]->getPosition();
                 for (int u=0; u < numberOfDimensions; u++){

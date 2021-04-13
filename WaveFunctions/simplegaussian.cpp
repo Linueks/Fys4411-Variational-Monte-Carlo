@@ -64,14 +64,14 @@ double SimpleGaussian::computeDoubleDerivative(std::vector<class Particle*> part
 
     for (int i=0; i < numberOfParticles; i++){
         std::vector<double> particlePosition = particles[i]->getPosition();
-        for (int j=0; j < numberOfDimensions; j++){
-            rSquared += particlePosition[j] * particlePosition[j];
-            cout << "no interaction, " <<"i:"<< i <<", d:"<< j << ", term:" << rSquared << endl;
+        for (int d=0; d < numberOfDimensions; d++){
+            rSquared += particlePosition[d] * particlePosition[d];
+            //cout << "no interaction, " <<"i:"<< i <<", d:"<< d << ", term:" << rSquared << endl;
 
         }
     }
     //cout << rSquared << endl;
-    return (-2 * numberOfDimensions * numberOfParticles * m_alpha + 4 * m_alpha*m_alpha * rSquared) * exp(-m_alpha * rSquared);
+    return (4 * m_alpha*m_alpha * rSquared -2 * numberOfDimensions * numberOfParticles * m_alpha);
 }
 
 double SimpleGaussian::alphaDerivative(std::vector<class Particle*> particles) {
@@ -83,8 +83,8 @@ double SimpleGaussian::alphaDerivative(std::vector<class Particle*> particles) {
     //cout << "hei" << endl;
     for (int i=0; i<numberOfParticles; i++){
         std::vector<double> particlePosition = particles[i]->getPosition();
-        for (int j=0; j<numberOfDimensions; j++){
-            rSquared += particlePosition[j] * particlePosition[j];
+        for (int d=0; d<numberOfDimensions; d++){
+            rSquared += particlePosition[d] * particlePosition[d];
         }
     }
     return -rSquared;
