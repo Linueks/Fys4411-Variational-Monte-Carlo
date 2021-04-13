@@ -48,8 +48,8 @@ int main() {
     // Seed for the random number generator
     int seed = 2021;
     int numberOfDimensions = 1;
-    int numberOfParticles = 1;
-    int numberOfSteps = 1 << 5;
+    int numberOfParticles = 10;
+    int numberOfSteps = 1 << 16;
     double omega_ho = 1.0;                          // Oscillator xy frequency.
     double omega_r = 1.0;                           // Oscillator z frequency  
     double stepLength = 0.1;                        // Metropolis step length.
@@ -63,7 +63,7 @@ int main() {
 
     // different method flags, bad solution but better than comment / uncommenting
     bool calculateNumericDerivative = false;
-    bool interactionOrNoInteraction = true;
+    bool interactionOrNot = true;
     
     
     bool activateImportanceSampling = true;
@@ -72,7 +72,8 @@ int main() {
 
     // set up system with everything defined above
     System* system = new System(seed);
-    if (interactionOrNoInteraction){
+    
+    if (interactionOrNot){
         if (calculateNumericDerivative){
             system->setHamiltonian(new InteractionOscillatorNum(system, omega_ho, omega_r));
         }
@@ -91,7 +92,7 @@ int main() {
         system->setWaveFunction(new SimpleGaussian(system, alpha));
     }
 
-
+    system->setInteraction(interactionOrNot);
     system->setInitialState(new RandomUniform(system, numberOfDimensions, numberOfParticles));
     system->setCutoffRadius(a);
     system->setEquilibrationFraction(equilibration);

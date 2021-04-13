@@ -14,6 +14,7 @@ public:
     void setNumberOfDimensions(int numberOfDimensions);
     void setStepLength(double stepLength);
     void setCutoffRadius(double a);
+    void setInteraction(bool interactionOrNoInteraction);
     void setNumberOfMetropolisSteps(int numberOfSteps);
     void setEquilibrationFraction(double equilibrationFraction);
     
@@ -43,6 +44,7 @@ public:
     double getEquilibrationFraction() {return m_equilibrationFraction;}
     double getCutoffRadius() {return m_a;}
     bool getWriteToFile() {return m_writeToFile;}
+    bool getInteractionOrNot() {return m_interactionOrNot;}
     std::string getOutfileName() {return m_filename;}
 
     bool m_computeAnalytical = false;
@@ -60,6 +62,7 @@ private:
     double m_a = 0;
     bool m_importanceSampling = false;
     bool m_writeToFile = false;
+    bool m_interactionOrNot = false;
     std::string m_filename = "";
 
     

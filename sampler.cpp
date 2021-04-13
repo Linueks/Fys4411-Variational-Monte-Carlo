@@ -57,7 +57,7 @@ void Sampler::sample(bool acceptedStep) {
     m_stepNumber++;
 
     if (m_stepNumber % 1000 == 0) {
-        cout << "i: " << m_stepNumber << endl;
+        cout << "i: " << m_stepNumber << ", Energy: " << m_cumulativeEnergy/(m_stepNumber+1) << endl;
     }
 
 

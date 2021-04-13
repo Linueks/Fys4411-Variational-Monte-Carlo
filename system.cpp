@@ -50,6 +50,10 @@ void System::setEquilibrationFraction(double equilibrationFraction) {
     //cout << "Equilibration Fraction sat: " << m_equilibrationFraction << endl;
 }
 
+void System::setInteraction(bool interactionOrNot) {
+    m_interactionOrNot= interactionOrNot;
+}
+
 void System::setStepLength(double stepLength) {
     assert(stepLength >= 0);
     m_stepLength = stepLength;
@@ -200,7 +204,7 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
 
 
         if (i > m_equilibrationFraction * m_numberOfMetropolisSteps) {
-            cout << "metrostep: "<<i<<",--------------"<< endl;
+            //cout << "metrostep: "<<i<<",--------------"<< endl;
             m_sampler->sample(acceptedStep);
         }
         
