@@ -1,0 +1,17 @@
+Simulation time: 11597ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.35, Energy: 149.667, Gradient: -395.291
+Simulation time: 11432ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.36, Energy: 149.479, Gradient: -344.267
+Simulation time: 11423ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.37, Energy: 149.324, Gradient: -298.35
+Simulation time: 11412ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.38, Energy: 149.201, Gradient: -257.071
+Simulation time: 11423ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.39, Energy: 149.11, Gradient: -220.003
+Simulation time: 11451ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.4, Energy: 149.05, Gradient: -186.756
+Simulation time: 11536ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.41, Energy: 149.02, Gradient: -156.976
+Simulation time: 11485ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.42, Energy: 149.019, Gradient: -130.338
+Simulation time: 11459ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999996, N parameters: 1, Parameter 1: 0.43, Energy: 149.047, Gradient: -106.549
+Simulation time: 11408ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999993, N parameters: 1, Parameter 1: 0.44, Energy: 149.111, Gradient: -85.711
+Simulation time: 11395ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999993, N parameters: 1, Parameter 1: 0.45, Energy: 149.194, Gradient: -66.7613
+Simulation time: 11388ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.59, Energy: 152.916, Gradient: 47.7938
+Simulation time: 11435ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.6, Energy: 153.343, Gradient: 49.8227
+Simulation time: 11431ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.61, Energy: 153.79, Gradient: 51.4367
+Simulation time: 11406ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.62, Energy: 154.254, Gradient: 52.6843
+Simulation time: 11441ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.63, Energy: 154.737, Gradient: 53.6089
+Simulation time: 11403ms, N particles: 100, N dimensons: 3, Metrosteps: 500000, Equilsteps: 50000, Acceptratio: 0.999989, N parameters: 1, Parameter 1: 0.64, Energy: 155.237, Gradient: 54.2502
