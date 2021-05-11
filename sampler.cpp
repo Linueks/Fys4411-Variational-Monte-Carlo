@@ -56,7 +56,7 @@ void Sampler::sample(bool acceptedStep) {
     m_psiEnergyDerivative += alphaDerivative*localEnergy;
     m_stepNumber++;
 
-    if (m_stepNumber % 1000 == 0) {
+    if (m_stepNumber % 1000000 == 0) {
         cout << "i: " << m_stepNumber << ", Energy: " << m_cumulativeEnergy/(m_stepNumber+1) << endl;
     }
 
@@ -90,7 +90,6 @@ void Sampler::printOutputToTerminal() {
     double ef = m_system->getEquilibrationFraction();
     std::vector<double> pa = m_system->getWaveFunction()->getParameters();
 
-    cout << endl;
     cout << "N particles: " << np;
     cout << ", N dimensons: " << nd;
     cout << ", Metrosteps: " << ms;
@@ -100,7 +99,8 @@ void Sampler::printOutputToTerminal() {
     for (int i=0; i < p; i++) {
         cout << ", Parameter " << i+1 << ": " << pa.at(i);
     }
-    cout << ", Energy : " << m_energy;
+    cout << ", Energy: " << m_energy;// <<endl;
+    cout << ", Gradient: " << 2 * (m_derivative - m_psiAlphaDerivative*m_energy) << endl;
 }
 
 void Sampler::computeAverages() {
@@ -109,7 +109,7 @@ void Sampler::computeAverages() {
     m_energy = m_cumulativeEnergy / m_stepNumber;
     m_psiAlphaDerivative = m_deltaPsi / m_stepNumber;
     m_derivative = m_psiEnergyDerivative / m_stepNumber;
-    m_acceptedRatio = m_acceptedSteps / (double) m_numberOfMetropolisSteps;
+    m_acceptedRatio = m_acceptedSteps / (double) m_stepNumber;
 }
 
 double Sampler::getEnergyGradient() {

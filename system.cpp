@@ -213,11 +213,13 @@ void System::runMetropolisSteps(int numberOfMetropolisSteps) {
     auto stop = chrono::high_resolution_clock::now();
     auto simulationDuration = chrono::duration_cast<chrono::milliseconds>(stop - start);
 
-    cout << "Simulation time: " << simulationDuration.count() << "ms";
+    cout << "Simulation time: " << simulationDuration.count() << "ms, ";
     m_sampler->computeAverages();
     m_sampler->printOutputToTerminal();
-    m_sampler->printEnergiesToFile();
-    double energyGradient = m_sampler->getEnergyGradient();
-    cout << ", Energy Gradient: " <<energyGradient << endl;
+    if (m_writeToFile){
+        m_sampler->printEnergiesToFile();
+    }
+    //double energyGradient = m_sampler->getEnergyGradient();
+    //cout << ", Energy Gradient: " <<energyGradient << endl;
 }
 

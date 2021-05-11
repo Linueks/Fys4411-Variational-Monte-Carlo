@@ -48,22 +48,22 @@ int main() {
     // Seed for the random number generator
     int seed = 2021;
     int numberOfDimensions = 1;
-    int numberOfParticles = 10;
-    int numberOfSteps = 1 << 16;
+    int numberOfParticles = 100;
+    int numberOfSteps = 1 << 23;
     double omega_ho = 1.0;                          // Oscillator xy frequency.
     double omega_r = 1.0;                           // Oscillator z frequency  
-    double stepLength = 0.1;                        // Metropolis step length.
-    double equilibration = 0.1;                     // Amount of the total steps used
+    double stepLength = 1.0;                        // Metropolis step length.
+    double equilibration = 0.0;                     // Amount of the total steps used
     double alpha = 0.5;                             // Variational parameter.
-    double beta = 2.82843;                          // Trap ellipticity
+    double beta = 1;//2.82843;                      // Trap ellipticity
     double a = 0.0043;                              // Cutoff parameter for particle interaction
-    double importanceDt = 0.05;                     // Timestep in importance sampling
+    double importanceDt = 0.001;                     // Timestep in importance sampling
     double derivativeStepSize = 1e-3;               // For when using numeric differentiation
 
 
     // different method flags, bad solution but better than comment / uncommenting
     bool calculateNumericDerivative = false;
-    bool interactionOrNot = true;
+    bool interactionOrNot = false;
     
     
     bool activateImportanceSampling = true;
@@ -71,8 +71,8 @@ int main() {
     bool writeToFile = true;
 
     // set up system with everything defined above
-    System* system = new System(seed);
     
+    System* system = new System();
     if (interactionOrNot){
         if (calculateNumericDerivative){
             system->setHamiltonian(new InteractionOscillatorNum(system, omega_ho, omega_r));
@@ -102,33 +102,94 @@ int main() {
     system->setDerivativeStepSize(derivativeStepSize);
     system->writeToFile(writeToFile, filename);
     system->runMetropolisSteps(numberOfSteps);
+    
+    
+    std::vector<int> nParticles = {1, 10, 50};    
+/*     for (int n : nParticles){
+        for (int r=0; r<5; r++){
+            System* system = new System();
+            if (interactionOrNot){
+                if (calculateNumericDerivative){
+                    system->setHamiltonian(new InteractionOscillatorNum(system, omega_ho, omega_r));
+                }
+                else{
+                    system->setHamiltonian(new InteractionOscillator(system, omega_ho, omega_r));
+                }
+                system->setWaveFunction(new Interacting(system, alpha, beta, a));
+            }
+            else{
+                if (calculateNumericDerivative){
+                    system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
+                }
+                else{
+                    system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
+                }
+                system->setWaveFunction(new SimpleGaussian(system, alpha));
+            }
 
-
-    // brute force search of the alpha parameter space
-/*     double variationalStepLength = 0.05;            // step length for alpha and beta values
-    double variationalIterations = 5;              // alpha + variationalStepLength*variationalIterations will be the end alpha
-    for (int i=0; i<variationalIterations; i++) {   
-        System* system = new System(seed);
-        //system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
-        system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
-        system->setWaveFunction(new SimpleGaussian(system, alpha));
-        system->setInitialState(new RandomUniform(system, numberOfDimensions, numberOfParticles));
-        system->setEquilibrationFraction(equilibration);
-        system->setStepLength(stepLength);
-        system->setNumberOfMetropolisSteps(numberOfSteps);
-        system->activateImportanceSampling(activateImportanceSampling, importanceDt);        
-        system->setDerivativeStepSize(derivativeStepSize);
-        system->runMetropolisSteps(numberOfSteps);
-        alpha += variationalStepLength;
+            system->setInteraction(interactionOrNot);
+            system->setInitialState(new RandomUniform(system, numberOfDimensions, n));
+            system->setCutoffRadius(a);
+            system->setEquilibrationFraction(equilibration);
+            system->setStepLength(stepLength);
+            system->setNumberOfMetropolisSteps(numberOfSteps);
+            system->activateImportanceSampling(activateImportanceSampling, importanceDt);
+            system->setDerivativeStepSize(derivativeStepSize);
+            system->writeToFile(writeToFile, filename);
+            system->runMetropolisSteps(numberOfSteps);
+        }
     } */
 
 
 
-    // simplest gradient descent search of the alpha parameter space
-/*     double nGradientDescentRuns = 50;
-    double learningRate = 0.35;
 
-    for (int i=0; i<nGradientDescentRuns; i++) {
+
+    // brute force search of the alpha parameter space
+    double variationalStepLength = 0.05;            // step length for alpha and beta values
+    double variationalIterations = 30;              // alpha + variationalStepLength*variationalIterations will be the end alpha
+    
+
+/*     for (int d=1; d<4; d++){
+        for (int n : nParticles){
+            alpha = 0.35;
+            cout << "---------- d: " << d << "---------- n: " << n << endl;
+            for (int i=0; i<variationalIterations; i++) {   
+                System* system = new System(seed);
+                //system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
+                system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
+                system->setWaveFunction(new SimpleGaussian(system, alpha));
+                system->setInitialState(new RandomUniform(system, d, n));
+                system->setEquilibrationFraction(equilibration);
+                system->setStepLength(stepLength);
+                system->setNumberOfMetropolisSteps(numberOfSteps);
+                system->activateImportanceSampling(activateImportanceSampling, importanceDt);        
+                system->setDerivativeStepSize(derivativeStepSize);
+                system->runMetropolisSteps(numberOfSteps);
+                alpha += variationalStepLength;
+            }
+        }
+    } */
+    
+
+
+
+
+    // simplest gradient descent search of the alpha parameter space
+
+    // for 1D 1P learning rate=0.35 and 10000 metrosteps converges nicely
+    // 1D 10P 0.05, 1D 100P 0.3, 1D 500 0.3
+
+    // for 2D 1P learning rate=0.35 and 10000 metrosteps converges nicely
+    // 2D 10P 0.3, 2D 100P 0.05 2D 500P 0.1 
+
+    // for 3D 1P learning rate=0.15 and 10000 metrosteps converges nicely
+    // 3D 10P 0.05, 3D 100P 0.05, 3D 500P 0.15
+
+
+    double nGradientDescentRuns = 50;
+    double learningRate = 0.15;
+
+/*     for (int i=0; i<nGradientDescentRuns; i++) {
         System* system = new System(seed);
         //system->setHamiltonian(new HarmonicOscillatorNum(system, omega_ho, omega_r)); //uncomment to run with numeric differentiation
         system->setHamiltonian(new HarmonicOscillator(system, omega_ho, omega_r));
@@ -145,8 +206,8 @@ int main() {
         Sampler* sampler = system->getSampler();
         double energyGradient = sampler->getEnergyGradient();
         alpha -= learningRate*energyGradient;
-    }
- */
+    } */
+
 
     return 0;
 }
